@@ -30,6 +30,9 @@
 
 		<!-- Template Main CSS File -->
 		<link href="{{ asset('template') }}/assets/css/style.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.0/css/select2.min.css" />
+
+		<!-- Select2 JS -->
 	</head>
 
 	<body>
@@ -41,10 +44,38 @@
 		@include('admin.layouts.sidebar')
 
 		<main id="main" class="main">
-
+			@if ($errors->any())
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
+			@endif
+			<div class="pagetitle">
+				<h1>{{ $title }}</h1>
+			</div><!-- End Page Title -->
 			@yield('content')
+			@if ($errors->any())
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
+			@endif
+			@if (session('alert'))
+				<div class="alert alert-success" role="alert">
+					<h4 class="alert-heading">Sukses!</h4>
+					<p>{{ session('alert') }}</p>
+				</div>
+			@endif
 
 		</main><!-- End #main -->
+
+		@stack('modals')
 
 		<!-- ======= Footer ======= -->
 		@include('admin.layouts.footer')

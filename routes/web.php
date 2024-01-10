@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\GolonganController;
+use App\Http\Controllers\PerjadinController;
 use App\Http\Controllers\DashboardController;
 
 /*
@@ -23,4 +27,10 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('user', UserController::class);
+    Route::resource('golongan', GolonganController::class);
+    Route::resource('jabatan', JabatanController::class);
+    Route::resource('perjadin', PerjadinController::class);
+    Route::get('/laporanPerjadin', [PerjadinController::class, 'laporanPerjadin'])->name('laporanPerjadin');
+    Route::post('/generate-report', [PerjadinController::class, 'generateReport'])->name('generateReport');
 });

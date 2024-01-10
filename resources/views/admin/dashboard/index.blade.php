@@ -1,24 +1,14 @@
 @extends('admin.layouts.app')
 @section('content')
-	<div class="pagetitle">
-		<h1>Dashboard</h1>
-		<nav>
-			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="index.html">Home</a></li>
-				<li class="breadcrumb-item active">Dashboard</li>
-			</ol>
-		</nav>
-	</div><!-- End Page Title -->
-
 	<section class="section dashboard">
 		<div class="row">
 
 			<!-- Left side columns -->
-			<div class="col-lg-8">
+			<div class="col-lg-12">
 				<div class="row">
 
 					<!-- Sales Card -->
-					<div class="col-xxl-4 col-md-6">
+					<div class="col-xxl-4">
 						<div class="card info-card sales-card">
 
 							<div class="card-body">
@@ -26,13 +16,10 @@
 
 								<div class="d-flex align-items-center">
 									<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-										<i class="bi bi-cart"></i>
+										<i class="bi bi-airplane"></i>
 									</div>
 									<div class="ps-3">
-										<h6>145</h6>
-										<span class="text-success small pt-1 fw-bold">12%</span> <span
-											class="text-muted small pt-2 ps-1">increase</span>
-
+										<h6>{{ $countPerjadin }}</h6>
 									</div>
 								</div>
 							</div>
@@ -41,7 +28,7 @@
 					</div><!-- End Sales Card -->
 
 					<!-- Revenue Card -->
-					<div class="col-xxl-4 col-md-6">
+					<div class="col-xxl-4">
 						<div class="card info-card revenue-card">
 
 							<div class="card-body">
@@ -49,13 +36,10 @@
 
 								<div class="d-flex align-items-center">
 									<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-										<i class="bi bi-currency-dollar"></i>
+										<i class="bi bi-cash"></i>
 									</div>
 									<div class="ps-3">
-										<h6>$3,264</h6>
-										<span class="text-success small pt-1 fw-bold">8%</span> <span
-											class="text-muted small pt-2 ps-1">increase</span>
-
+										<h6>Rp. {{ number_format($countPerjadinB) }}</h6>
 									</div>
 								</div>
 							</div>
@@ -76,10 +60,7 @@
 										<i class="bi bi-people"></i>
 									</div>
 									<div class="ps-3">
-										<h6>1244</h6>
-										<span class="text-danger small pt-1 fw-bold">12%</span> <span
-											class="text-muted small pt-2 ps-1">decrease</span>
-
+										<h6>{{ $countPegawai }}</h6>
 									</div>
 								</div>
 
