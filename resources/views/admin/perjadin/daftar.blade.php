@@ -44,11 +44,14 @@
 										<td>{{ date('d F Y', strtotime($item->tgl_kembali)) }}</td>
 										<td>Rp. {{ number_format($item->biaya) }}</td>
 										<td>
-											<a class="btn btn-xs btn-warning" href="{{ route('user.edit', $item->id, '.edit') }}"><i
-													class="bx bx-edit-alt me-1"></i> Edit</a>
-											<button class="btn btn-xs btn-info" data-bs-toggle="modal"
+											<a class="btn btn-xs btn-warning mb-2" href="{{ route('perjadin.edit', $item->id, '.edit') }}"><i
+													class="bx bx-edit-alt me-1 "></i> Edit</a>
+											<button class="btn btn-xs btn-info mb-2" data-bs-toggle="modal"
 												data-bs-target="#modalDetail{{ $item->id }}"><i class="bx bx-info-circle me-1"></i> Detail</button>
-											<button class="btn btn-xs btn-danger" data-bs-toggle="modal"
+											<a class="btn btn-xs btn-success mb-2" href="{{ route('perjadin.bukti', ['id' => $item->id]) }}">
+												<i class="bx bx-upload me-1"></i> Upload Bukti Perjadin
+											</a>
+											<button class="btn btn-xs btn-danger mb-2" data-bs-toggle="modal"
 												data-bs-target="#modalDelete{{ $item->id }}"><i class="bx bx-trash me-1"></i> Delete</button>
 										</td>
 									</tr>
@@ -68,18 +71,18 @@
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="modalDeleteTitle">Delete Pegawai</h5>
+						<h5 class="modal-title" id="modalDeleteTitle">Hapus Perjalanan Dinas</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
-					<form action="{{ route('user.destroy', $item->id) }}" method="POST">
+					<form action="{{ route('perjadin.destroy', $item->id) }}" method="POST">
 						@csrf
 						@method('delete')
 						<div class="modal-body">
 							<div class="row">
 								<div class="col-12">
 									<div class="alert alert-danger" role="alert">
-										<h4 class="alert-heading">Apakah anda yakin ingin menghapus data pegawai</h4>
-										<p><strong>{{ $item->name }}</strong> ?</p>
+										<h4 class="alert-heading">Apakah anda yakin ingin menghapus data Perjalanan Dinas</h4>
+										<p>Tujuan <strong>{{ $item->tujuan }}</strong> dalam rangka <strong>{{ $item->dalam_rangka }}</strong> ?</p>
 										<hr>
 									</div>
 								</div>

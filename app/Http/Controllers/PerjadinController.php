@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Bukti;
 use App\Models\Perjadin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PerjadinController extends Controller
 {
@@ -12,7 +14,7 @@ class PerjadinController extends Controller
     {
         return view('admin.perjadin.daftar', [
             'title'     => 'Daftar Perjalanan Dinas',
-            'perjadin'  => Perjadin::all(),
+            'perjadin'  => Perjadin::latest()->get(),
         ]);
     }
 
@@ -91,5 +93,52 @@ class PerjadinController extends Controller
             'data'      => $perjadinData,
             'getBulan'  => $getBulan
         ]);
+    }
+
+    public function buktiPerjadin($id)
+    {
+        return view('admin.perjadin.bukti', [
+            'title'     => 'Upload Bukti Perjalanan Dinas',
+            'user'      => User::all(),
+            'bukti'     => Bukti::where('perjadin_id', $id)->get(),
+        ]);
+    }
+
+    public function storeBukti(Request $request)
+    {
+        // Validate the incoming request data
+        // ddd($request);
+        $validatedData = $request->validate([
+            'perjadin_id' => 'required',
+            'nama_bukti' => 'required|string',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        // Handle file upload
+        $fotoPath = $request->file('foto')->store('bukti_foto'); // Store the uploaded file in the specified directory
+
+        // Create a new Bukti instance with the validated data
+        $bukti = new Bukti();
+        $bukti->perjadin_id = $validatedData['perjadin_id'];
+        $bukti->nama_bukti = $validatedData['nama_bukti'];
+        $bukti->foto = $fotoPath; // Store the file path in the database
+        $bukti->keterangan = $validatedData['keterangan'];
+        $bukti->save();
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Bukti Perjadin berhasil disimpan.');
+    }
+
+    public function destroyBukti($id)
+    {
+        $bukti = Bukti::find($id);
+
+        if (!empty($bukti->foto)) {
+            Storage::delete($bukti->foto);
+        }
+
+        $bukti->delete();
+        return redirect()->back()->with('success', 'Bukti Perjadin berhasil dihapu.');
     }
 }
