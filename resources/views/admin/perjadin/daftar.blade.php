@@ -21,6 +21,7 @@
 									<th>Golongan</th>
 									<th>Jabatan</th>
 									<th>Tujuan</th>
+									<th>Status</th>
 									<th>Dalam Rangka</th>
 									<th>Tanggal Berangkat</th>
 									<th>Tanggal Kembali</th>
@@ -39,20 +40,31 @@
 										<td>{{ $item->user->golongan }}</td>
 										<td>{{ $item->user->jabatan }}</td>
 										<td>{{ $item->tujuan }}</td>
+										<td>
+											@if ($item->status == 'benar')
+												<h4>
+													<span class="badge bg-success"><i class="bx bx-check-circle"></i></span>
+
+												</h4>
+											@endif
+										</td>
 										<td>{{ $item->dalam_rangka }}</td>
 										<td>{{ date('d F Y', strtotime($item->tgl_berangkat)) }}</td>
 										<td>{{ date('d F Y', strtotime($item->tgl_kembali)) }}</td>
 										<td>Rp. {{ number_format($item->biaya) }}</td>
 										<td>
-											<a class="btn btn-xs btn-warning mb-2" href="{{ route('perjadin.edit', $item->id, '.edit') }}"><i
+											<a class="btn btn-xs btn-warning mb-2" href="{{ route('perjadin.edit', $item->id) }}"><i
 													class="bx bx-edit-alt me-1 "></i> Edit</a>
-											<button class="btn btn-xs btn-info mb-2" data-bs-toggle="modal"
-												data-bs-target="#modalDetail{{ $item->id }}"><i class="bx bx-info-circle me-1"></i> Detail</button>
-											<a class="btn btn-xs btn-success mb-2" href="{{ route('perjadin.bukti', ['id' => $item->id]) }}">
-												<i class="bx bx-upload me-1"></i> Upload Bukti Perjadin
-											</a>
+											<a class="btn btn-xs btn-info mb-2" href="{{ route('perjadin.detail', $item->id) }}"><i
+													class="bx bx-info-circle me-1 "></i> Detail</a>
 											<button class="btn btn-xs btn-danger mb-2" data-bs-toggle="modal"
 												data-bs-target="#modalDelete{{ $item->id }}"><i class="bx bx-trash me-1"></i> Delete</button>
+											<form action="{{ route('perjadin.checklist', $item->id) }}" method="POST" style="display:inline;">
+												@csrf
+												@method('PATCH')
+												<button type="submit" class="btn btn-xs btn-success mb-2"><i class="bx bx-check me-1"></i>
+													Checklist</button>
+											</form>
 										</td>
 									</tr>
 								@endforeach

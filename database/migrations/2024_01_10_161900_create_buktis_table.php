@@ -17,8 +17,9 @@ class CreateBuktisTable extends Migration
             $table->id();
             $table->foreignId('perjadin_id');
             $table->string('nama_bukti');
-            $table->string('foto');
+            $table->string('foto')->nullable();
             $table->string('keterangan')->nullable();
+            $table->decimal('nominal', 15, 0);
             $table->timestamps();
 
             $table->foreign('perjadin_id')->references('id')->on('perjadins')->onDelete('cascade');

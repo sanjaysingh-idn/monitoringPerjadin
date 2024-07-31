@@ -21,6 +21,7 @@ class CreatePerjadinsTable extends Migration
             $table->date('tgl_berangkat');
             $table->date('tgl_kembali');
             $table->decimal('biaya', 15, 0);
+            $table->enum('status', ['benar', 'revisi'])->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

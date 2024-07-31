@@ -43,6 +43,15 @@ class PerjadinController extends Controller
         return back();
     }
 
+    public function detailPerjadin($id)
+    {
+        return view('admin.perjadin.detail', [
+            'title'     => 'Detail Perjalanan Dinas',
+            'perjadin'  => Perjadin::findOrFail($id),
+            'bukti'     => Bukti::where('perjadin_id', $id)->get(),
+        ]);
+    }
+
     public function show(Perjadin $perjadin)
     {
         //
@@ -107,23 +116,27 @@ class PerjadinController extends Controller
     public function storeBukti(Request $request)
     {
         // Validate the incoming request data
-        // ddd($request);
         $validatedData = $request->validate([
-            'perjadin_id' => 'required',
-            'nama_bukti' => 'required|string',
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'keterangan' => 'nullable|string',
+            'perjadin_id'   => 'required',
+            'nama_bukti'    => 'required|string',
+            'nominal'       => 'required|string',
+            'foto'          => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'keterangan'    => 'nullable|string',
         ]);
 
         // Handle file upload
-        $fotoPath = $request->file('foto')->store('bukti_foto'); // Store the uploaded file in the specified directory
+        $fotoPath = null;
+        if ($request->hasFile('foto')) {
+            $fotoPath = $request->file('foto')->store('bukti_foto'); // Store the uploaded file in the specified directory
+        }
 
         // Create a new Bukti instance with the validated data
         $bukti = new Bukti();
         $bukti->perjadin_id = $validatedData['perjadin_id'];
         $bukti->nama_bukti = $validatedData['nama_bukti'];
+        $bukti->nominal = $validatedData['nominal'];
         $bukti->foto = $fotoPath; // Store the file path in the database
-        $bukti->keterangan = $validatedData['keterangan'];
+        $bukti->keterangan = $validatedData['keterangan'] ?? null;
         $bukti->save();
 
         // Redirect back with a success message
@@ -140,5 +153,14 @@ class PerjadinController extends Controller
 
         $bukti->delete();
         return redirect()->back()->with('success', 'Bukti Perjadin berhasil dihapu.');
+    }
+
+    public function checklist($id)
+    {
+        $perjadin = Perjadin::find($id);
+        $perjadin->status = 'benar';
+        $perjadin->save();
+
+        return redirect()->back()->with('success', 'Status Perjadin berhasil diubah');
     }
 }

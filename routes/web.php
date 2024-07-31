@@ -37,4 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perjadin/{id}/bukti', [PerjadinController::class, 'buktiPerjadin'])->name('perjadin.bukti');
     Route::post('/bukti/store', [PerjadinController::class, 'storeBukti'])->name('bukti.store');
     Route::delete('bukti/{id}', [PerjadinController::class, 'destroyBukti'])->name('bukti.destroy');
+
+    Route::get('/perjadin/detail/{id}', [PerjadinController::class, 'detailPerjadin'])->name('perjadin.detail');
+    Route::patch('/perjadin/checklist/{id}', [PerjadinController::class, 'checklist'])->name('perjadin.checklist');
 });
